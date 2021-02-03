@@ -13,7 +13,7 @@ sad_words = ['sad', 'depressed', 'unhappy', 'angry', 'miserable', 'depressing']
 starter_encouragements = ["Cheer up!", "Hang in there.",
  "You are a great person!" ]
 
-if "responding" in db.keys():
+if "responding" not in db.keys():
   db["responding"] = True
 
 def getQuote():
@@ -58,7 +58,7 @@ async def on_message(message):
     quote = getQuote()
     await message.channel.send(quote)
 
-  
+  if db["responding"]:
     options = starter_encouragements
     if "encouragements" in db.keys():
       options = options + db["encouragements"]
@@ -78,6 +78,12 @@ async def on_message(message):
       del_Encouragements(index)
       encouragements = db['encouragements']
       await message.channel.send(encouragements)
+
+  if msg.startswith("$list"):
+    encouragements = []
+    if "encouragements" in db.keys():
+      encouragements = db["encouragements"]
+    await message.channel.send(encouragements)
 
 client.run(os.getenv('token'))
 
