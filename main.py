@@ -5,6 +5,8 @@ import json
 
 client = discord.Client()
 
+sad_words = ['sad', 'depressed', 'unhappy', 'angry', 'miserable', 'depressing']
+
 def getQuote():
   response = requests.get("https://zenquotes.io/api/random")
   json_data = json.loads(response.text)
