@@ -13,6 +13,9 @@ sad_words = ['sad', 'depressed', 'unhappy', 'angry', 'miserable', 'depressing']
 starter_encouragements = ["Cheer up!", "Hang in there.",
  "You are a great person!" ]
 
+if "responding" in db.keys():
+  db["responding"] = True
+
 def getQuote():
   response = requests.get("https://zenquotes.io/api/random")
   json_data = json.loads(response.text)
@@ -30,7 +33,7 @@ def updateEncouragements(enouraging_msg):
 
 
 def del_Encouragements(index):
-  encouragements = db["enouragements"]
+  encouragements = db["encouragements"]
   if len(encouragements) > index:
     del encouragements[index]
   db["encouragements"] = encouragements
@@ -55,13 +58,14 @@ async def on_message(message):
     quote = getQuote()
     await message.channel.send(quote)
 
-  options = starter_encouragements
-  if "encouragements" in db.keys():
-    options = options + db["encouragements"]
-
-  if any(word in msg for word in sad_words):
-    await message.channel.send(random.choice(options))
   
+    options = starter_encouragements
+    if "encouragements" in db.keys():
+      options = options + db["encouragements"]
+
+    if any(word in msg for word in sad_words):
+      await message.channel.send(random.choice(options))
+    
   if msg.startswith("$new"):
     encouraging_message = msg.split("$new ", 1)[1]
     updateEncouragements(encouraging_message)
@@ -73,7 +77,7 @@ async def on_message(message):
       index = int(msg.split("$del",1)[1])
       del_Encouragements(index)
       encouragements = db['encouragements']
-      await msg.channel.send(encouragements)
+      await message.channel.send(encouragements)
 
 client.run(os.getenv('token'))
 
