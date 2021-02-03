@@ -67,6 +67,13 @@ async def on_message(message):
     updateEncouragements(encouraging_message)
     await message.channel.send("New Message added!")
 
+  if msg.startswith("$del"):
+    encouragements = []
+    if "encouragements" in db.keys():
+      index = int(msg.split("$del",1)[1])
+      del_Encouragements(index)
+      encouragements = db['encouragements']
+      await msg.channel.send(encouragements)
 
 client.run(os.getenv('token'))
 
