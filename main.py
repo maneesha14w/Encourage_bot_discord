@@ -8,7 +8,8 @@ client = discord.Client()
 def getQuote():
   response = requests.get("https://zenquotes.io/api/random")
   json_data = json.loads(response.text)
-
+  quote = json_data[0]['q'] + " -" + json_data[0]['a']
+  
 
 @client.event
 async def on_ready():
@@ -23,5 +24,6 @@ async def on_message(message):
     await message.channel.send('Hello!')
 
 # client.run(os.getenv('token'))
+getQuote()
 
 
