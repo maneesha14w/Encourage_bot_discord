@@ -55,9 +55,12 @@ async def on_message(message):
     quote = getQuote()
     await message.channel.send(quote)
 
-  
+  options = starter_encouragements
+  if "encouragements" in db.keys():
+    options = options + db["encouragements"]
+
   if any(word in msg for word in sad_words):
-    await message.channel.send(random.choice(starter_encouragements))
+    await message.channel.send(random.choice(options))
     
 
 client.run(os.getenv('token'))
