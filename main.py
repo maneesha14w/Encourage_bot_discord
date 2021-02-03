@@ -61,7 +61,12 @@ async def on_message(message):
 
   if any(word in msg for word in sad_words):
     await message.channel.send(random.choice(options))
-    
+  
+  if msg.startswith("$new"):
+    encouraging_message = msg.split("$new ", 1)[1]
+    updateEncouragements(encouraging_message)
+    await message.channel.send("New Message added!")
+
 
 client.run(os.getenv('token'))
 
